@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: frontend-react-app
+  namespace: development
   labels:
     app: frontend-react-app
 spec:
@@ -30,6 +31,7 @@ kind: Service
 apiVersion: v1
 metadata:
   name: frontend-react-app
+  namespace: development
 spec:
   selector:
     app: frontend-react-app
