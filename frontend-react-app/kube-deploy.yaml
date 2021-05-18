@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: frontend-react-app
-        image: umairnaushad/frontend-react-app
+        image: umairnaushad/frontend-react-app:latest
         resources: 
           requests:
             cpu: "200m"
