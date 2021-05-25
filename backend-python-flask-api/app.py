@@ -1,15 +1,20 @@
 import sys
 
-from flask import Flask, request, flash, url_for, redirect, render_template
+from flask import Flask, request, flash, url_for, redirect, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
+from config import DATABASE_URI
+
+db2 = create_engine(DATABASE_URI)
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/cms'
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URI
 app.config['SECRET_KEY'] = "random string"
 
 db = SQLAlchemy(app)
 
 class User(db.Model):
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -56,6 +61,12 @@ def new():
          return redirect(url_for('show_all'))
    else:
       return render_template('new.html')
+
+@app.route('/api/v1/resources/users/all', methods=['GET'])
+@app.route('/all', methods=['GET'])
+def users_all():
+   result_set = db2.execute("SELECT * FROM user")
+   return jsonify(result_set)
 
 if __name__ == '__main__':
    db.create_all()
