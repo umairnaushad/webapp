@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+{% block content %}
+   <table>
+      <thead>
+         <tr>
+            <th>Id</th>
+            <th>User Name</th>
+            <th>Email</th>
+         </tr>
+      </thead>
+      <tbody>
+         {% if isList == "false" %}
+            <tr>
+               <td>{{ users.id }}</td>
+               <td>{{ users.username }}</td>
+               <td>{{ users.email }}</td>
+            </tr>
+         {% else %}
+            {% for user in users %}
+               <tr>
+                  <td>{{ user.id }}</td>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+               </tr>
+            {% endfor %}
+         {% endif %}
+      </tbody>
+   </table>
+{% endblock content %}
