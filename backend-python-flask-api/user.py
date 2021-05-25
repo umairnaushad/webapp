@@ -1,13 +1,15 @@
 from sqlalchemy import Column, String, Integer, Date, Table, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql.expression import false, true
 from base import Base
 
 
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(String(80), unique=True, nullable=False)
-    email = Column(String(120), unique=True, nullable=False)
+    username = Column(String(80), nullable=true)
+    email = Column(String(120), nullable=true)
+    ##email = Column(String(120), unique=false, nullable=true)
     def __init__(self, username, email):
            self.username=username
            self.email=email

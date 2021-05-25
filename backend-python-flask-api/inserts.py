@@ -2,7 +2,7 @@ from datetime import date
 from base import Session, engine, Base
 from user import User
 
-Base.metadata.create_all(engine)
+##Base.metadata.create_all(engine)
 
 session = Session()
 
