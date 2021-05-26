@@ -1,5 +1,5 @@
-from base import Session
-from user import User
+from models.base import Session
+from models.user import User
 
 
 session = Session()

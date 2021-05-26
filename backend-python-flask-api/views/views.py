@@ -2,8 +2,8 @@ import sys
 
 from flask import Flask, request, flash, url_for, redirect, render_template, jsonify
 from sqlalchemy.sql.functions import user
-from models.base import Session, engine, Base
-from models.user import User
+from base import Session, engine, Base
+from user import User
 from config import DATABASE_URI
 
 app = Flask(__name__)

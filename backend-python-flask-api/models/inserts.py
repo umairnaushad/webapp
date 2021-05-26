@@ -1,6 +1,6 @@
 from datetime import date
-from base import Session, engine, Base
-from user import User
+from models.base import Session, engine, Base
+from models.user import User
 
 ##Base.metadata.create_all(engine)
 
