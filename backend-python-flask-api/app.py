@@ -31,6 +31,7 @@ def new():
    req = request.form
    username = req.get("username")
    email = req.get("email")
+   print("username="+str(username)+"-email="+str(email))
    if request.method == 'POST':
       if not username or not email:
          flash('Please enter all the fields', 'error')
@@ -52,38 +53,42 @@ def getAllUsers():
 
 @app.route('/api/v1/resources/users/ById/<int:id>', methods=['GET'])
 def getUserById(id):
-    if request.method == 'GET':
-        return getUserById(id)
+   if request.method == 'GET':
+      return getUserById(id)
 
 @app.route('/api/v1/resources/users/ByUsername/<string:name>', methods=['GET'])
 def getUserByName(name):
-    if request.method == 'GET':
-        return getUserByUsername(name)
+   if request.method == 'GET':
+      return getUserByUsername(name)
 
 ####################
 
-@app.route('/user', methods=['GET'])
-@app.route('/api/v1/resources/users', methods=['GET'])
-def get_users():
-   if 'username' in request.args:
-      name = request.args['username']
-   
+
+@app.route('/api/v1/resources/users/users/create', methods=['POST'])
+def createUser():
+   if request.method == 'POST':
+      session.add(User(request.form.get("username"), request.form.get("email")))
+      session.commit()
+      return redirect(url_for('getAllUsers'))
+
+'''
+@app.route('/register', methods = ['GET', 'POST'])
+def new():
    req = request.form
    username = req.get("username")
-   print("username="+str(username))
-   users = session.query(User).filter_by(username=name).all()
-   return render_template('user.html', users = users, isList="true")
-   #return jsonify(users)
-
-@app.route('/users/new/', methods=['GET', 'POST'])
-def newUser():
+   email = req.get("email")
    if request.method == 'POST':
-      newUser = User(request.form['username'], request.form['email'])
-      session.add(newUser)
-      session.commit()
-      return render_template('newBook.html', users = newUser, isList="false")
-
-
+      if not username or not email:
+         flash('Please enter all the fields', 'error')
+      else:
+         user = User(username, email)
+         session.add(user)
+         session.commit()
+         flash('Record was successfully added')
+         return render_template('user.html', users=user, isList="false")
+         #return redirect(url_for('user'))
+   return render_template('register.html')
+'''
 
 @app.route('/')
 @app.route('/userApi', methods = ['GET', 'POST'])
