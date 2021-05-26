@@ -16,3 +16,11 @@ class User(Base):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}')"
+
+    @property
+    def serialize(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email,
+        }
