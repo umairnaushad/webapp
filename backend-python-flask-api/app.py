@@ -6,6 +6,8 @@ from models.base import Session, engine, Base
 from models.user import User
 from config import DATABASE_URI
 
+############### GUI APP ###############
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "abcabcabc"
 session = Session()
@@ -38,8 +40,27 @@ def register():
          return render_template('user.html', users=user, isList="false")
    return render_template('register.html')
 
+############### SAMPLE READ TYPES ###############
 
-##################################
+@app.route('/query-example')
+def query_example():
+   if request.method == 'GET':
+      id =  int(request.args.get('id'))
+      return getUserById(id)
+
+@app.route('/form-example', methods=['GET'])
+def form_example():
+   if request.method == 'GET':
+      id =  int(request.form.get('id'))
+      return getUserById(id)
+
+@app.route('/json-example', methods=['GET'])
+def json_example():
+    request_data = request.get_json()
+    id = int(request_data['id'])
+    return getUserById(id)
+
+############### API ###############
 
 @app.route('/api/v1/resources/users', methods=['GET'])
 def getAllUsers():
@@ -77,7 +98,6 @@ def updateUser(user_id):
 @app.route('/api/v1/resources/users/users/create', methods=['POST'])
 def createUser():
    if request.method == 'POST':
-      print("a="+str(request.form.get("username")))
       addNewUser(request.form.get("username"), request.form.get("email"))
       return redirect(url_for('getAllUsers'))
 
@@ -86,7 +106,6 @@ def addNewUser(userName, email):
    user = User(username=userName, email=email)
    session.add(user)
    session.commit()
-   print("b="+str(user.email))
    getUserByUsername(userName)
    return jsonify(User=user.serialize)
 
