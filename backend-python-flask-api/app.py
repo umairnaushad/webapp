@@ -23,12 +23,8 @@ def home():
 def about():
    return render_template('about.html')
 
-@app.route('/register')
-def register():
-   return render_template('register.html')
-
 @app.route('/register', methods = ['GET', 'POST'])
-def new():
+def register():
    username = request.form.get("username")
    email = request.form.get("email")
    if request.method == 'POST':
