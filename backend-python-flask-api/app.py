@@ -5,11 +5,13 @@ from sqlalchemy.sql.functions import user
 from models.base import Session, engine, Base
 from models.user import User
 from config import DATABASE_URI
+from flask_cors import CORS
 
 ############### GUI APP ###############
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = "abcabcabc"
+CORS(app)
 session = Session()
 
 @app.route('/')
