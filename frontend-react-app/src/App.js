@@ -1,54 +1,46 @@
-import React, { Component } from "react";
+import React from 'react';
 
-export default function App() {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [acceptedTerms, setAcceptedTerms] = React.useState(false);
-
-  const handleSubmit = (event) => {
-    console.log(`
-      Email: ${email}
-      Password: ${password}
-      Accepted Terms: ${acceptedTerms}
-    `);
-    
-    event.preventDefault();
+class UserProfiles extends React.Component {
+  constructor(){
+    super();
+    this.state = {
+      //name: {title: '', first: '', last: ''},
+      user: {id: '', username: '', email: ''}
+      //image: ''
+    };
+    // fix the this value
+    this.getUser = this.getUser.bind(this);
   }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <h1>Create Account</h1>
+  componentWillMount() {
+    this.getUser();
+  }
 
-      <label>
-        Email:
-        <input
-          name="email"
-          type="email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          required />
-      </label>
-      
-      <label>
-        Password:
-        <input
-          name="password"
-          type="password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          required />
-      </label>
+  getUser() {
+    //fetch('https://randomuser.me/api/')
+    fetch('http://127.0.0.1:5000/api/v1/resources/users/ById/11')
+    
+    //fetch('http://localhost:5000/query-example?id=20')
+    .then(response => {
+      if(response.ok) return response.json();
+      throw new Error('Request failed.');
+    })
+    .then(data => {
+      this.setState({user: data.user});
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
 
-      <label>
-        <input
-          name="acceptedTerms"
-          type="checkbox"
-          onChange={e => setAcceptedTerms(e.target.value)}
-          required />
-        I accept the terms of service        
-      </label>
-
-      <button>Submit</button>
-    </form>
-  );
+  render() {
+    return (
+	<div>
+          <h1>{`${this.state.user.id} ${this.state.user.username} ${this.state.user.email}`}</h1>
+          <button onClick={this.getUser}>Get new user.</button>
+	</div>
+    );
+  }
 }
+
+export default UserProfiles;
